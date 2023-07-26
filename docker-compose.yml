@@ -1,0 +1,21 @@
+version: "3.8"
+services:
+    ansible-molecule:
+        container_name: ansible-molecule
+        image: ansible
+        # restart: always
+        privileged: true
+        stdin_open: true
+        tty: true
+        ports:
+          - "22:22"
+        # environment:
+        #     WORDPRESS_DB_HOST: db:3306
+        #     WORDPRESS_DB_USER: user1
+        #     WORDPRESS_DB_PASSWORD: password
+        #     WORDPRESS_DB_NAME: word1base
+        volumes:
+            - //var/run/docker.sock:/var/run/docker.sock
+
+
+# -v //var/run/docker.sock:/var/run/docker.sock
