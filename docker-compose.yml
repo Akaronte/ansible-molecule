@@ -9,13 +9,5 @@ services:
         tty: true
         ports:
           - "22:22"
-        # environment:
-        #     WORDPRESS_DB_HOST: db:3306
-        #     WORDPRESS_DB_USER: user1
-        #     WORDPRESS_DB_PASSWORD: password
-        #     WORDPRESS_DB_NAME: word1base
         volumes:
             - //var/run/docker.sock:/var/run/docker.sock
-
-
-# -v //var/run/docker.sock:/var/run/docker.sock
