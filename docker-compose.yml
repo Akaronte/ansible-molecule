@@ -10,4 +10,5 @@ services:
         ports:
           - "22:22"
         volumes:
+            - ./share:/root/share
             - //var/run/docker.sock:/var/run/docker.sock

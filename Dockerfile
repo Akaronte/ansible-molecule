@@ -25,7 +25,7 @@ RUN apt-get update \
   && rm -rf /var/lib/apt/lists/*
 
 RUN apt-get -y install python3-pip 
-RUN pip3 install ansible molecule pywinrm ansible-lint molecule[lint] molecule[docker]
+RUN pip3 install ansible molecule pywinrm ansible-lint molecule[lint] molecule[docker] molecule[podman]
 
 #RUN ssh-keygen -q -t rsa -N '' -f ~/.ssh/id_rsa <<<y >/dev/null 2>&1
 
@@ -50,6 +50,8 @@ RUN echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/d
 RUN apt update
 
 RUN apt install docker-ce -y
+
+RUN apt-get update && apt-get install podman -y
 
 WORKDIR /
 RUN apt -y install git && \
