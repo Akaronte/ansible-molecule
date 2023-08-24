@@ -25,7 +25,7 @@ RUN apt-get update \
   && rm -rf /var/lib/apt/lists/*
 
 RUN apt-get -y install python3-pip 
-RUN pip3 install ansible molecule pywinrm ansible-lint molecule[lint] molecule[docker] molecule[podman]
+RUN pip3 install ansible molecule pywinrm ansible-lint molecule[lint] molecule[docker] 
 
 #RUN ssh-keygen -q -t rsa -N '' -f ~/.ssh/id_rsa <<<y >/dev/null 2>&1
 
@@ -51,7 +51,18 @@ RUN apt update
 
 RUN apt install docker-ce -y
 
+### molecule version 6
+# RUN apt install -y libffi-dev git && python3 -m pip install -U git+https://github.com/ansible-community/molecule
+
+### podman 
+
 RUN apt-get update && apt-get install podman -y
+
+RUN ansible-galaxy collection install containers.podman
+
+ENV MOLECULE_PODMAN_EXECUTABLE=podman-remote
+
+RUN pip3 install molecule-podman molecule[podman]
 
 WORKDIR /
 RUN apt -y install git && \
@@ -62,7 +73,7 @@ RUN apt -y install git && \
     useradd -u 1001 -g ansible -d /home/ansible -s /bin/bash ansible && \
     chown -R ansible:ansible /home/ansible
 
-RUN pip install yamllint ansible-lint molecule molecule-docker
+RUN pip3 install yamllint ansible-lint molecule molecule-docker
 
 RUN apt-get update && apt-get install ca-certificates apt-transport-https lsb-release gnupg -y
 
