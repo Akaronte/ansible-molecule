@@ -1,8 +1,8 @@
 version: "3.8"
 services:
     ansible-molecule:
-        container_name: ansible-molecule
-        image: molecule
+        container_name: centos
+        image: centos
         # restart: always
         privileged: true
         stdin_open: true

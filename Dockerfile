@@ -17,6 +17,15 @@ RUN apt-get update && apt-get install -y python3 python3-distutils python3-pip p
 
 ENV DEBIAN_FRONTEND=noninteractive
 
+WORKDIR /
+RUN apt -y install git && \
+    apt-get clean && \
+    apt-get autoremove && \
+    mkdir /home/ansible/ && \
+    groupadd -g 1000060001 ansible && \
+    useradd -u 1001 -g ansible -d /home/ansible -s /bin/bash ansible && \
+    chown -R ansible:ansible /home/ansible
+
 RUN apt-get update \
   && apt-get install -y python3-pip python3-dev \
   && cd /usr/local/bin \
@@ -24,8 +33,12 @@ RUN apt-get update \
   && pip3 --no-cache-dir install --upgrade pip \
   && rm -rf /var/lib/apt/lists/*
 
-RUN apt-get -y install python3-pip 
-RUN pip3 install ansible molecule pywinrm ansible-lint molecule[lint] molecule[docker] 
+RUN apt-get -y install python3-pip
+
+RUN pip3 install ansible molecule==5.1.0 pywinrm ansible-lint molecule-docker yamllint molecule[lint] molecule[docker]
+
+## molecule version 6
+# RUN apt install -y libffi-dev git && python3 -m pip install -U git+https://github.com/ansible-community/molecule
 
 #RUN ssh-keygen -q -t rsa -N '' -f ~/.ssh/id_rsa <<<y >/dev/null 2>&1
 
@@ -51,29 +64,16 @@ RUN apt update
 
 RUN apt install docker-ce -y
 
-### molecule version 6
-# RUN apt install -y libffi-dev git && python3 -m pip install -U git+https://github.com/ansible-community/molecule
-
 ### podman 
 
 RUN apt-get update && apt-get install podman -y
 
-RUN ansible-galaxy collection install containers.podman
+RUN ansible-galaxy collection install containers.podman  --force && ansible-galaxy collection install ansible.posix --force
+
 
 ENV MOLECULE_PODMAN_EXECUTABLE=podman-remote
 
 RUN pip3 install molecule-podman molecule[podman]
-
-WORKDIR /
-RUN apt -y install git && \
-    apt-get clean && \
-    apt-get autoremove && \
-    mkdir /home/ansible/ && \
-    groupadd -g 1000060001 ansible && \
-    useradd -u 1001 -g ansible -d /home/ansible -s /bin/bash ansible && \
-    chown -R ansible:ansible /home/ansible
-
-RUN pip3 install yamllint ansible-lint molecule molecule-docker
 
 RUN apt-get update && apt-get install ca-certificates apt-transport-https lsb-release gnupg -y
 
