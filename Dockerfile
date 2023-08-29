@@ -83,5 +83,8 @@ RUN AZ_REPO=$(lsb_release -cs) && echo "deb [arch=amd64] https://packages.micros
 
 RUN apt-get update && apt-get install azure-cli -y
 
+RUN ansible-galaxy collection install community.docker  --force
+RUN ansible-galaxy collection install ansible.posix --force
+
 EXPOSE 22
 CMD ["/usr/sbin/sshd", "-D"]
