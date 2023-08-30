@@ -70,7 +70,7 @@ RUN apt install docker-ce -y
 
 RUN apt-get update && apt-get install podman -y
 
-RUN ansible-galaxy collection install containers.podman  --force && ansible-galaxy collection install ansible.posix --force
+RUN ansible-galaxy collection install containers.podman --force && ansible-galaxy collection install ansible.posix --force
 
 
 ENV MOLECULE_PODMAN_EXECUTABLE=podman-remote
@@ -87,6 +87,15 @@ RUN apt-get update && apt-get install azure-cli -y
 
 RUN ansible-galaxy collection install community.docker  --force
 RUN ansible-galaxy collection install ansible.posix --force
+RUN ansible-galaxy collection install containers.podman --force
+
+USER ansible
+
+RUN ansible-galaxy collection install community.docker  --force
+RUN ansible-galaxy collection install ansible.posix --force
+RUN ansible-galaxy collection install containers.podman --force
+
+USER root
 
 EXPOSE 22
 CMD ["/usr/sbin/sshd", "-D"]
