@@ -22,9 +22,11 @@ RUN apt -y install git && \
     apt-get clean && \
     apt-get autoremove && \
     mkdir /home/ansible/ && \
-    groupadd -g 1000060001 ansible && \
+    groupadd -g 1001 ansible && \
     useradd -u 1001 -g ansible -d /home/ansible -s /bin/bash ansible && \
     chown -R ansible:ansible /home/ansible
+
+RUN RUN echo 'ansible:ansible' | chpasswd
 
 RUN apt-get update \
   && apt-get install -y python3-pip python3-dev \

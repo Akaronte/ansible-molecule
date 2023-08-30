@@ -2,7 +2,8 @@ version: "3.8"
 services:
     ansible-molecule:
         container_name: ansible-molecule
-        image: molecule
+        # image: molecule
+        build: ./
         # restart: always
         privileged: true
         stdin_open: true
@@ -10,5 +11,5 @@ services:
         ports:
           - "22:22"
         volumes:
-            - ./share:/root/share
+            - ./share:/home/ansible/share
             - //var/run/docker.sock:/var/run/docker.sock
