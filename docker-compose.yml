@@ -1,15 +1,18 @@
 version: "3.8"
 services:
-    ansible-molecule:
-        container_name: ansible-molecule
-        # image: molecule
-        build: ./
-        # restart: always
-        privileged: true
-        stdin_open: true
-        tty: true
-        ports:
-          - "22:22"
-        volumes:
-            - ./share:/home/ansible/share
-            - //var/run/docker.sock:/var/run/docker.sock
+  ansible-molecule:
+    container_name: ansible-molecule
+    image: docker.io/library/molecule
+    #build: ./
+    cap_add:
+      - SYS_ADMIN
+      - DAC_READ_SEARCH
+    privileged: true
+    stdin_open: true
+    tty: true
+    ports:
+      - "22:22"
+    volumes:
+      - //var/run/docker.sock:/var/run/docker.sock
+      # - /sys/fs/cgroup:/sys/fs/cgroup
+      - ./:/home/ansible/share

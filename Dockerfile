@@ -97,5 +97,12 @@ RUN ansible-galaxy collection install containers.podman --force
 
 USER root
 
+RUN apt-get install jq nano dnsmasq -y
+
 EXPOSE 22
-CMD ["/usr/sbin/sshd", "-D"]
+# CMD ["/usr/sbin/sshd", "-D","echo 'nameserver 8.8.8.8' > '/etc/resolv.conf'"]
+
+COPY start.sh /usr/bin/
+RUN chmod a+x /usr/bin/start.sh
+ENTRYPOINT ["/usr/bin/start.sh"]
+# CMD [, "&&","service ssh restart"]
